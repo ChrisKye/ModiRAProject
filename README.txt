@@ -8,3 +8,6 @@ Next Steps
 - add write to csv functionality to save parts
 - optimize & create requests for all gv_key
 - test out merging false positives with Pilot
+
+- WRDS only provides SAS full text search functionality
+- prob better if we do it in sec-api
