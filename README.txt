@@ -14,3 +14,8 @@ Next Steps
 
 - the SHIT DOES NOT FUCKING WORK
 - check false positives -> no reason it shouldn't fucking work
+
+- SASStudio
+- results file
+- look at callreports.sas
+- use sample code on WRDS
