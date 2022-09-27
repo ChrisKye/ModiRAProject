@@ -11,3 +11,6 @@ Next Steps
 
 - WRDS only provides SAS full text search functionality
 - prob better if we do it in sec-api
+
+- the SHIT DOES NOT FUCKING WORK
+- check false positives -> no reason it shouldn't fucking work
