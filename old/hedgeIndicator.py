@@ -23,9 +23,9 @@ gv_list.head()
 
 ##Load in reference map
 cikmap = pd.read_csv('index.csv')
-cikmap['cik'] = cikmap['cik'].astype(int)
 cikmap.set_index(keys = cikmap['gvkey'], inplace=True) ##gvkeys as indices
 cikmap['cik']=cikmap['cik'].fillna(-1)
+cikmap['cik'] = cikmap['cik'].astype(int)
 cikmap.head(10)
 
 ########################  Positive Matches First  ########################
@@ -34,14 +34,18 @@ positive_df.head()
 
 ## Create list to track unmatched gvkeys
 missingcik = []
+missinggvkey = []
 
-queryApi = FullTextSearchApi(api_key="86712fa19f2b64be72ace0aa5aef5c749db89848915282aeaff562be7fb018fb")
+queryApi = FullTextSearchApi(api_key="924e625c185d49e08371c3d2291c83ec2f9403289cd73d576da7071a693b147d")
 
 ##for each entry in gv_list
 for index in range(11):              ## loop over gvkey list
-    
     ##Find first company CIK
     key = gv_list['gvkey'].iloc[index]
+    if(key not in cikmap['gvkey']):
+        print("gvkey for Company " + str(index+1) + " not in map. Exiting...")
+        missinggvkey.append(key)
+        continue
     cik = []
     here = cikmap['cik'].loc[key].astype(int).astype(str)
     
@@ -118,7 +122,12 @@ for index in range(11):              ## loop over gvkey list
             
         ##print size of positive_df
     print("Total Entries: " + str(len(positive_df)) + "\n")
-    
+##Finishing Up
+print("Queries Complete.")
+print("Total number of unmatched gvkeys: " + str(len(missingcik)))
+print("Total number of missing CIK's: " + str(len(missinggvkey)))
+print("Total number of entries: " + str(len(positive_df)))
+
 ##Clean up data and write to csv
 positive_df = positive_df.reset_index().drop(columns=['index'])
 positive_df['Date'] = positive_df['Date'].dt.date
