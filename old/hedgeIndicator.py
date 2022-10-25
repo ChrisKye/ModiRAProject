@@ -8,7 +8,6 @@ This script runs queries across a list of gvkeys to check text matches for inter
 
 import pandas as pd
 import pyreadstat
-import numpy as np
 from sec_api import FullTextSearchApi
 
 ##Load in gvkey List
@@ -39,7 +38,7 @@ missinggvkey = []
 queryApi = FullTextSearchApi(api_key="924e625c185d49e08371c3d2291c83ec2f9403289cd73d576da7071a693b147d")
 
 ##for each entry in gv_list
-for index in range(11):              ## loop over gvkey list
+for index in range(10):              ## loop over gvkey list
     ##Find first company CIK
     key = gv_list['gvkey'].iloc[index]
     if(key not in cikmap['gvkey']):
@@ -64,7 +63,7 @@ for index in range(11):              ## loop over gvkey list
         ##check if CIK is in list
         if (cikk == '-1'):
             missingcik.append(key)
-            print("ERROR: CIK not found")
+            print("CIK Error: missing value")
         else:
             print("CIK found: " + str(cikk))
             ##Download
@@ -95,7 +94,7 @@ for index in range(11):              ## loop over gvkey list
             }
             filings = queryApi.get_filings(query)
             total = filings['total']['value']
-            print("Total for CIK" + str(cikk) + ": " + str(total))
+            print("    Total: " + str(total))
             
             ##check if it has matches
             if (total > 0):
