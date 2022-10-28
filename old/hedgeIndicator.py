@@ -34,11 +34,12 @@ positive_df.head()
 ## Create list to track unmatched gvkeys
 missingcik = []
 missinggvkey = []
+random_error = []
 
 queryApi = FullTextSearchApi(api_key="924e625c185d49e08371c3d2291c83ec2f9403289cd73d576da7071a693b147d")
 
 ##for each entry in gv_list
-for index in range(10):              ## loop over gvkey list
+for index in range(len(gv_list)):              ## loop over gvkey list
     ##Find first company CIK
     key = gv_list['gvkey'].iloc[index]
     if(key not in cikmap['gvkey']):
@@ -88,11 +89,19 @@ for index in range(10):              ## loop over gvkey list
                     \"interest rate collar\" OR \
                     \"interest rate cap\"",
                 "formTypes": ["10-K","10-Q"],
-                "ciks": [cik],
+                "ciks": [cikk],
                 "startDate": "1900-01-01",
-                "endDate": "2022-09-18"
+                "endDate": "2022-11-30"
             }
             filings = queryApi.get_filings(query)
+            
+            ##check for random error
+            if (len(filings['total']) == 0):
+                random_error.append(index)
+                print("Error occurred")
+                continue
+            
+            ##total number of filings
             total = filings['total']['value']
             print("    Total: " + str(total))
             
@@ -132,3 +141,5 @@ positive_df = positive_df.reset_index().drop(columns=['index'])
 positive_df['Date'] = positive_df['Date'].dt.date
 
 positive_df.to_csv("positive.csv")
+
+print("Complete.")
