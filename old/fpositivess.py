@@ -28,18 +28,19 @@ cikmap['cik'] = cikmap['cik'].astype(int)
 cikmap.head(10)
 
 ########################  Positive Matches First  ########################
-fpositive_df = pd.DataFrame(columns=['CIK','Company_Name','Filing','Date','Hedge_Positive', 'Hedge_FalsePositive'])
+fpositive_df = pd.DataFrame(columns=['CIK','Company_Name','Filing','Date','Hedge_FalsePositive'])
 fpositive_df.head()
 
 ## Create list to track unmatched gvkeys
 missingcik = []
 missinggvkey = []
 random_error = []
+nomatch = []
 
 queryApi = FullTextSearchApi(api_key="924e625c185d49e08371c3d2291c83ec2f9403289cd73d576da7071a693b147d")
 
 ##for each entry in gv_list
-for index in range(len(gv_list)):              ## loop over gvkey list
+for index in range(3):              ## loop over gvkey list
     ##Find first company CIK
     key = gv_list['gvkey'].iloc[index]
     if(key not in cikmap['gvkey']):
@@ -197,11 +198,11 @@ for index in range(len(gv_list)):              ## loop over gvkey list
                 comp_df = pd.DataFrame(entries, columns=['CIK','Company_Name','Filing','Date','Hedge_FalsePositive'])
                 comp_df['Date'] = pd.to_datetime(comp_df['Date'])
                 comp_df = comp_df.sort_values(by=['Date'])
-                add this here -> figure out order comp_df['Hedge_Positive'] = ''  
                 
                 ##concat to fpositive_df
                 fpositive_df = pd.concat([fpositive_df,comp_df])  
-            
+            else:
+                nomatch.append(cikk)
         ##print size of fpositive_df
     print("Total Entries: " + str(len(fpositive_df)) + "\n")
 ##Finishing Up
@@ -214,6 +215,6 @@ print("Total number of entries: " + str(len(fpositive_df)))
 fpositive_df = fpositive_df.reset_index().drop(columns=['index'])
 fpositive_df['Date'] = fpositive_df['Date'].dt.date
 
-fpositive_df.to_csv("positive.csv")
+fpositive_df.to_csv("fpositive.csv")
 
 print("Complete.")
