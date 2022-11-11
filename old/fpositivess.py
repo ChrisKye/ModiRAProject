@@ -41,7 +41,7 @@ missinggvkey = []
 random_error = []
 nomatch = []
 
-## Read in query text
+## Read in query search texts
 with codecs.open("f_positive_clean_1.txt", 'r', encoding='unicode_escape') as file:
     query_1 = file.read()
 with codecs.open("f_positive_clean_2.txt", 'r', encoding='unicode_escape') as file:
@@ -97,8 +97,10 @@ for index in range(10):              ## loop over gvkey list
         if (len(filings_1['total']) == 0):    
             random_error.append(cikk)
             cik.insert(cik_index+1,cikk)        ##if we get an error, we redo request
-            print("Error occurred, retrying...")
+            print("    Error occurred, retrying...")
             continue
+        else:
+            print("    Query 1 complete.")
         
         ## Run second query
         query = {
@@ -114,8 +116,10 @@ for index in range(10):              ## loop over gvkey list
         if (len(filings_2['total']) == 0):    
             random_error.append(cikk)
             cik.insert(cik_index+1,cikk)        ##if we get an error, we redo request
-            print("Error occurred, retrying...")
+            print("   Error occurred, retrying...")
             continue
+        else:
+            print("    Query 2 complete.")
         
         ## Run third query
         query = {
@@ -131,8 +135,10 @@ for index in range(10):              ## loop over gvkey list
         if (len(filings_3['total']) == 0):    
             random_error.append(cikk)
             cik.insert(cik_index+1,cikk)        ##if we get an error, we redo request
-            print("Error occurred, retrying...")
+            print("    Error occurred, retrying...")
             continue
+        else:
+            print("    Query 3 complete.")
         
         ##total number of filings
         total = filings_1['total']['value'] + filings_2['total']['value'] + filings_3['total']['value']
