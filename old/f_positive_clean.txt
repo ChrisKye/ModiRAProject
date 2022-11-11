@@ -1,4 +1,4 @@
-"\"not used any interest rate\" OR \
+\"not used any interest rate\" OR \
 \"not use any interest rate\" OR \
 \"not using any interest rate\" OR \
 \"not used interest rate\" OR \
@@ -90,4 +90,4 @@
 \"swapped the fixed rate to a variable rate\" OR \
 \"will receive fixed interest rate payments and will make variable interest rate payments\" OR \
 \"not use derivative financial instruments to manage interest rate risk\" OR \
-\"not currently use derivative financial instruments to manage interest rate risk\""
+\"not currently use derivative financial instruments to manage interest rate risk\"
