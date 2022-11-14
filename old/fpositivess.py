@@ -34,7 +34,7 @@ cikmap.head(10)
 ########################  Positive Matches First  ########################
 fpositive_df = pd.DataFrame(columns=['CIK','Company_Name','Filing','Date','Hedge_FalsePositive'])
 fpositive_df.head()
-
+    
 ## Create list to track unmatched gvkeys
 missingcik = []
 missinggvkey = []
@@ -52,7 +52,7 @@ with codecs.open("f_positive_clean_3.txt", 'r', encoding='unicode_escape') as fi
 queryApi = FullTextSearchApi(api_key="924e625c185d49e08371c3d2291c83ec2f9403289cd73d576da7071a693b147d")
 
 ##for each entry in gv_list
-for index in range(10):              ## loop over gvkey list
+for index in range(len(gv_list)):              ## loop over gvkey list
     ##Find first company cikmap
     key = gv_list['gvkey'].iloc[index]
     if(key not in cikmap['gvkey']):

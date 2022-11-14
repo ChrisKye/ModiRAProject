@@ -7,12 +7,30 @@ Created on Wed Nov  9 12:36:23 2022
 """
 
 import pandas as pd
+from sec_api import QueryApi
+import pyreadstat
+import time
+
+##Load in other 2 
+positives = pd.read_csv('positive.csv')
+fpositives = pd.read_csv('fpositive.csv')
+master = pd.read_csv('master.csv')
+
+positives = positives.drop(columns = ['Unnamed: 0','Hedge_FalsePositive'])
+fpositives = fpositives.iloc[:,1:]
+master = master.iloc[:,1:]
+master['CIK'] = pd.to_numeric(master['CIK'])
 
 
-df1 = pd.DataFrame({'key': ['foo','bar', 'baz', 'faz'],
-                    'fp': [1, 2, 3, 4]})
-df2 = pd.DataFrame({'key': ['bar', 'foo', 'faz'],
-                    'p': [5, 6, 7]})
+a = positives[positives['CIK']==61478]
+b = fpositives[fpositives['CIK']==61478]
+c = master[master['CIK']==61478]
 
-df3 = df1.merge(df2, how='outer', on = 'key')
-print(df3)
+c = c.drop(columns = ['Company_Name'])
+
+##merge datasets
+d = c.merge(a, how = 'outer', on = ['CIK','Filing','Date'])
+d = d.merge(b, how = 'outer', on = ['CIK', 'Filing','Date'])
+
+##Fill in company names
+

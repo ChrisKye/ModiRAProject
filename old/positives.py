@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Hedge Indicator (Master)
+Name: positives.py
 
-This script runs queries across a list of gvkeys to check text matches for interest rate hedges.
-
+This script runs full text searching using queries to sec_api.
 """
 
 import pandas as pd
