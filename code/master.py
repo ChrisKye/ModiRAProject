@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Wed Nov  9 12:36:23 2022
+Name: master.py
 
-@author: chriskyee
+This script downloads all 10-K/10-Q filings for a list of gvkeys
+
 """
 
 import pandas as pd
@@ -14,7 +15,7 @@ import time
 start_time = time.time()
 
 ##Load in gvkey List
-gv_list, meta = pyreadstat.read_dta('gvkey_list.dta')
+gv_list, meta = pyreadstat.read_dta('../data/gvkey_list.dta')
 gv_list.head()
 
 ## Sort list & change to int
@@ -24,7 +25,7 @@ gv_list['gvkey'] = gv_list['gvkey'].astype(str).astype(int)
 gv_list.head()
 
 ##Load in reference map
-cikmap = pd.read_csv('index.csv')
+cikmap = pd.read_csv('../data/index.csv')
 cikmap.set_index(keys = cikmap['gvkey'], inplace=True) ##gvkeys as indices
 cikmap['cik']=cikmap['cik'].fillna(-1)
 cikmap['cik'] = cikmap['cik'].astype(int)
@@ -39,11 +40,12 @@ missingcik = []
 missinggvkey = []
 random_error = []
 nomatch = []
+many_filings = []
 
 queryApi = QueryApi(api_key="924e625c185d49e08371c3d2291c83ec2f9403289cd73d576da7071a693b147d")
 queryApi_2 = FullTextSearchApi(api_key = "924e625c185d49e08371c3d2291c83ec2f9403289cd73d576da7071a693b147d")
 
-for index in range(len(gv_list)):
+for index in range(50):
     ##Find first company cikmap
     key = gv_list['gvkey'].iloc[index]
     if(key not in cikmap['gvkey']):
@@ -104,12 +106,30 @@ for index in range(len(gv_list)):
             print("    Error occurred, retrying...")
             continue
         
-        else:
-            print("    Query complete.")
-        
-        ##print total number of filings
+        elif(filings['total']['value'] > 100):
+            many_filings.append(filings['total']['value'])
+            leftover = filings['total']['value'] - 100
+            page = 1
+            
+            while(leftover > 0):
+                page += 1
+                print("    Querying page " + str(page) + " ...")
+                query = {
+                    "query": "",
+                    "formTypes": ["10-K","10-Q"],
+                    "ciks": [cikk],
+                    "startDate": "1900-01-01",
+                    "endDate": "2022-11-30",
+                    "page": str(page)
+                }
+                filings_2 = queryApi_2.get_filings(query)
+                filings['filings'] = filings['filings'] + filings_2['filings']
+                print("    filings length: " + str(len(filings['filings'])))
+                leftover -= 100
+
         total = filings['total']['value']
         print("    Total: " + str(total))
+        print("    Query complete.")
         
         ##check matches
         if (total > 0):
@@ -150,5 +170,5 @@ master_df['Date'] = pd.to_datetime(master_df['Date'])
 master_df['Date'] = master_df['Date'].dt.date
 master_df['CIK'] = pd.to_numeric(master_df['CIK'])
 
-master_df.to_csv("master_v2.csv")
+master_df.to_csv("../data/master_v3.csv")
 print("Complete.")

@@ -2,7 +2,8 @@
 """
 Name: positives.py
 
-This script runs full text searching using queries to sec_api.
+This script runs queries across a list of gvkeys to check text matches for false positives
+
 """
 
 import pandas as pd
@@ -26,11 +27,11 @@ cikmap['cik']=cikmap['cik'].fillna(-1)
 cikmap['cik'] = cikmap['cik'].astype(int)
 cikmap.head(10)
 
-########################  Positive Matches First  ########################
+##Create empty df to populate with matches
 positive_df = pd.DataFrame(columns=['CIK','Company_Name','Filing','Date','Hedge_Positive', 'Hedge_FalsePositive'])
 positive_df.head()
 
-## Create list to track unmatched gvkeys
+## Create lists to track errors
 missingcik = []
 missinggvkey = []
 random_error = []
@@ -39,7 +40,8 @@ queryApi = FullTextSearchApi(api_key="924e625c185d49e08371c3d2291c83ec2f9403289c
 
 ##for each entry in gv_list
 for index in range(len(gv_list)):              ## loop over gvkey list
-    ##Find first company CIK
+    
+    #Find first company CIK
     key = gv_list['gvkey'].iloc[index]
     if(key not in cikmap['gvkey']):
         print("gvkey for Company " + str(index+1) + " not in map. Exiting...")
@@ -58,6 +60,7 @@ for index in range(len(gv_list)):              ## loop over gvkey list
     cik = list(set(cik))
     
     print("Total Number of CIK's for Company " + str(index+1) + ": " + str(len(cik)))
+    
     ##Query across all CIK's
     for cikk in cik: 
         ##check if CIK is in list
@@ -127,8 +130,9 @@ for index in range(len(gv_list)):              ## loop over gvkey list
                 ##concat to positive_df
                 positive_df = pd.concat([positive_df,comp_df])  
             
-    ##print size of positive_df
+    ##print size of positive_df for each iteration
     print("Total Entries: " + str(len(positive_df)) + "\n")
+
 ##Finishing Up
 print("Queries Complete.")
 print("Total number of unmatched gvkeys: " + str(len(missingcik)))
@@ -139,6 +143,5 @@ print("Total number of entries: " + str(len(positive_df)))
 positive_df = positive_df.reset_index().drop(columns=['index'])
 positive_df['Date'] = positive_df['Date'].dt.date
 positive_df.to_csv("positive.csv")
-
 
 print("Complete.")

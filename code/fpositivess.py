@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Hedge Indicator (Master)
+Name: fpositives.py
 
-This script runs queries across a list of gvkeys to check text matches for interest rate hedges.
+This script runs queries across a list of gvkeys to check text matches for false positives
 
 """
 
