@@ -16,24 +16,20 @@ start_time = time.time()
 
 ##Load in gvkey List
 gv_list, meta = pyreadstat.read_dta('gvkey_list.dta')
-gv_list.head()
 
 ## Sort list & change to int
 gv_list = gv_list.sort_values(by = 'gvkey')
 gv_list = gv_list.drop(19)
 gv_list['gvkey'] = gv_list['gvkey'].astype(str).astype(int)
-gv_list.head()
 
 ##Load in reference map
 cikmap = pd.read_csv('index.csv')
 cikmap.set_index(keys = cikmap['gvkey'], inplace=True) ##gvkeys as indices
 cikmap['cik']=cikmap['cik'].fillna(-1)
 cikmap['cik'] = cikmap['cik'].astype(int)
-cikmap.head(10)
 
 ########################  Positive Matches First  ########################
 fpositive_df = pd.DataFrame(columns=['CIK','Company_Name','Filing','Date','Hedge_FalsePositive'])
-fpositive_df.head()
     
 ## Create list to track unmatched gvkeys
 missingcik = []
