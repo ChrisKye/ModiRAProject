@@ -15,24 +15,25 @@ We repeated the process for a new set of gvkeys and CIK's. We downloaded filings
 In order to circumvent the max. character count of each query specified by sec-api, false positive matches were downloaded in 3 separate queries. text_editing.ipynb splits the list of false positive query strings and formats each into non-delimited text files that can be read in as Python strings.
 
 ### Data
-gvkey_list.dta: list of gvkeys used to perform searches on
-fpositive_v2.csv	
-master_v3.csv 
-f_positive.txt		
-master_v3_v2.csv
-f_positive_clean.txt	
-hedgeIndicator.csv	
-positive.csv
-f_positive_clean_1.txt	
-hedgeIndicator_v2.csv	
-positive.txt
-f_positive_clean_2.txt	
-index.csv		
-positive_v2.csv
-f_positive_clean_3.txt	
-master.csv
-updated_keys.csv
-fpositive.csv		
-master_v2.csv
-error_CIK.csv
+_positive.txt_: list of positive match strings  
+_f_positive.txt_: list of false positive match strings  
+_f_positive_clean_1.txt_: first false positive query string  
+_f_positive_clean_2.txt_:	first false positive query string  
+_f_positive_clean_3.txt_:	first false positive query string  
+  
+_gvkey_list.dta_: list of gvkeys used to perform searches for hedgeIndicator.csv  
+_index.csv_: reference table to map gvkeys to CIK's for hedgeIndicator.csv  
+_positive.csv_: table of positive matches  
+_fpositive.csv_: table of false positive matches  
+_master.csv_: table of all company filings  
+_hedgeIndicator.csv_: final hedge indicator 
+  
+_updated_keys.csv_: reference table used for gvkey-CIK pairs in v2  
+_positive_v2.csv_: table of positive matches in v2  
+_fpositive_v2.csv_: table of false positive matches in v2  
+_master_v2.csv_: table of all company filings in v2  
+_hedgeIndicator_v2.csv_: final hedge indicator in v2  
+  
+_error_CIK.csv_:   
+Due to the high volume of queries, the API generated some random errors in querying that resulted in inconsistent return values (i.e. missing filings). This file contains a list of CIK's with known errors.
 
