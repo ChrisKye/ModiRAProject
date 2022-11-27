@@ -1,21 +1,30 @@
-Data was scraped using sec-api full text search api
-PROBLEMS
-- to search for specific phrases in exact order, api doesn't work
-- resolved
-
-Next Steps
-- obtain new api key for 50,000 calls
-- add write to csv functionality to save parts
-- optimize & create requests for all gv_key
-- test out merging false positives with Pilot
-
-- WRDS only provides SAS full text search functionality
-- prob better if we do it in sec-api
-
-- the SHIT DOES NOT FUCKING WORK
-- check false positives -> no reason it shouldn't fucking work
-
-- SASStudio
-- results file
-- look at callreports.sas
-- use sample code on WRDS
+{5910,
+ 7323,
+ 16918,
+ 23632,
+ 44570,
+ 55387,
+ 65984,
+ 76741,
+ 202584,
+ 715957,
+ 804212,
+ 893657,
+ 895364,
+ 919465,
+ 922224,
+ 927720,
+ 927721,
+ 932628,
+ 1027574,
+ 1047862,
+ 1047905,
+ 1058633,
+ 1074771,
+ 1081316,
+ 1094052,
+ 1265284,
+ 1271834,
+ 1348952,
+ 1427437,
+ 1581068}
