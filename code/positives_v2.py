@@ -12,20 +12,17 @@ from sec_api import FullTextSearchApi
 
 ##Load in gvkey List
 gv_list, meta = pyreadstat.read_dta('../data/gvkey_list.dta')
-gv_list.head()
 
 ## Sort list & change to int
 gv_list = gv_list.sort_values(by = 'gvkey')
 gv_list = gv_list.drop(19)
 gv_list['gvkey'] = gv_list['gvkey'].astype(str).astype(int)
-gv_list.head()
 
 ##Load in reference map
 cikmap = pd.read_csv('../data/index.csv')
 cikmap.set_index(keys = cikmap['gvkey'], inplace=True) ##gvkeys as indices
 cikmap['cik']=cikmap['cik'].fillna(-1)
 cikmap['cik'] = cikmap['cik'].astype(int)
-cikmap.head(10)
 
 ##Load in new reference map
 keys = pd.read_csv('../data/updated_keys.csv')
@@ -67,7 +64,11 @@ for key in unique_keys:              ## loop over gvkey list
     print("Total Number of CIK's for Company " + str(count) + ": " + str(len(cik)))
 
     ##Query across all CIK's
+    cik_index = -1;
     for cikk in cik:
+        cik_index = cik_index + 1
+        
+        ## Skip if it already exists
         if (int(cikk) in final_cik):
             print("CIK already exists")
             continue
